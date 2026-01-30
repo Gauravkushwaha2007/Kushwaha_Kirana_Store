@@ -9,5 +9,3 @@ hostRouter.get('/addEditProducts/:productId', homeController.getEditProducts);
 hostRouter.post('/addEditProducts', homeController.postEditProducts);
 
 module.exports = { hostRouter };
-
-
