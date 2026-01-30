@@ -1,0 +1,69 @@
+<%- include('../partials/header',{ title: 'Add product' }) %>
+
+<main class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">
+        <%= editing? "Edit" : "Add" %> Product in Kushwaha Kirana Store
+    </h2>
+    <form action="/<%=editing? 'addEditProducts' : 'addProduct'%> " method="post" class="space-y-4">
+        <input type="text" value="<%= editing? product.productId : '' %>">
+        <input 
+            type="text" 
+            name="userName" 
+            value="<%= editing? product.userName : '' %>"
+            placeholder="Enter your name"
+            required
+            class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+
+        <input 
+            type="text" 
+            name="userId" 
+            value="<%= editing? product.userId : '' %>"
+            placeholder="Enter user id" 
+            required
+            class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+
+        <h3 class="text-lg font-medium text-gray-700">
+            Enter product details
+        </h3>
+
+        <input 
+            type="text" 
+            name="productName" 
+            value="<%= editing? product.productName : '' %>"
+            placeholder="Enter your Product" 
+            required
+            class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+
+        <!-- ✅ IMAGE URL FIELD -->
+        <input 
+            type="text" 
+            name="imageUrl" 
+            value="<%= editing? product.imageUrl : '' %>"
+            placeholder="Enter product image URL"
+            required
+            class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+
+        <input 
+            type="number" 
+            name="price" 
+            value="<%=editing? product.price : '' %>"
+            placeholder="Enter price" 
+            required
+            class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+
+        <button 
+            type="submit"
+            class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold"
+        >
+           <%= editing? 'Update' : 'Add' %> Product
+        </button>
+
+    </form>
+</main>
+
+<%- include('../partials/footer') %>

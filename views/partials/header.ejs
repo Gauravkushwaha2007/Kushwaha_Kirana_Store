@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+
+
+<link rel="stylesheet" href="/css/output.css">
+
+
+<script>
+    function toggleMenu() {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+</script>
+</head>
+
+<body class="bg-gray-100">
+
+<header class="bg-white/90 backdrop-blur shadow sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-2 flex justify-between items-center">
+
+        <!-- LOGO -->
+        <div class="flex items-center gap-3">
+            <img src="/images/logo.png" class="h-14 sm:h-16 w-auto" />
+            <span class="font-semibold text-lg sm:text-xl text-gray-800">
+                Kirana Store
+            </span>
+        </div>
+
+        <!-- DESKTOP NAV -->
+        <nav class="hidden sm:flex items-center gap-2">
+
+            <% const active = "bg-gray-900 text-white"; %>
+            <% const normal = "text-gray-600 hover:bg-gray-100"; %>
+
+            <!-- Home -->
+            <a href="/allProducts"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm
+               <%= title === 'Products' ? active : normal %>">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M3 9.5l9-7 9 7V20a1 1 0 01-1 1h-5v-7H9v7H4a1 1 0 01-1-1z"/>
+                </svg>
+                Home
+            </a>
+
+            <!-- Favourite -->
+            <a href="/favouriteList"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm
+               <%= title === 'Favourites' ? active : normal %>">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M20.8 4.6c-1.6-1.5-4.2-1.5-5.8 0L12 7.5l-3-2.9c-1.6-1.5-4.2-1.5-5.8 0-1.8 1.7-1.8 4.5 0 6.2l8.8 8.4 8.8-8.4c1.8-1.7 1.8-4.5 0-6.2z"/>
+                </svg>
+                Favourites
+            </a>
+
+            <!-- Orders -->
+            <a href="/myOrders"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm
+               <%= title === 'My Orders' ? active : normal %>">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M3 7h18M3 12h18M3 17h18"/>
+                </svg>
+                My Items
+            </a>
+
+            <!-- Add -->
+            <a href="/addEditProducts"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm
+               <%= title === 'Add Products' ? active : normal %>">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4"/>
+                </svg>
+                Add
+            </a>
+
+            <!-- HostProductList -->
+            <a href="/hostProductList"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm
+               <%= title === 'Add Products' ? active : normal %>">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4"/>
+                </svg>
+                Hosted
+            </a>
+        </nav>
+
+        <!-- MOBILE BUTTON -->
+        <button onclick="toggleMenu()" class="sm:hidden text-gray-700">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <!-- ✅ MOBILE MENU -->
+<div id="mobileMenu" class="hidden sm:hidden border-t bg-white">
+    <nav class="flex flex-col gap-1 p-4 text-sm">
+
+        <!-- Add Products -->
+        <a href="/addProducts"
+           class="flex items-center gap-3 px-4 py-3 rounded-lg
+                  text-gray-700 hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M12 4v16m8-8H4"/>
+            </svg>
+            Add Products
+        </a>
+
+        <!-- Favourites -->
+        <a href="/favouriteList"
+           class="flex items-center gap-3 px-4 py-3 rounded-lg
+                  text-gray-700 hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M20.8 4.6c-1.6-1.5-4.2-1.5-5.8 0L12 7.5l-3-2.9c-1.6-1.5-4.2-1.5-5.8 0-1.8 1.7-1.8 4.5 0 6.2l8.8 8.4 8.8-8.4c1.8-1.7 1.8-4.5 0-6.2z"/>
+            </svg>
+            Your Items
+        </a>
+
+        <!-- Orders -->
+        <a href="/myOrders"
+           class="flex items-center gap-3 px-4 py-3 rounded-lg
+                  text-gray-700 hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+            My Orders
+        </a>
+
+        <!-- Host Products -->
+        <a href="/hostProductList"
+           class="flex items-center gap-3 px-4 py-3 rounded-lg
+                  text-gray-700 hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M4 4h16v6H4zM4 14h16v6H4z"/>
+            </svg>
+            Host Products
+        </a>
+
+        <!-- Home -->
+        <a href="/allProducts"
+           class="flex items-center gap-3 px-4 py-3 rounded-lg
+                  bg-gray-900 text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+                <path d="M3 9.5l9-7 9 7V20a1 1 0 01-1 1h-5v-7H9v7H4a1 1 0 01-1-1z"/>
+            </svg>
+            Home
+        </a>
+
+    </nav>
+</div>
+
+</header>

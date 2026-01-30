@@ -1,0 +1,79 @@
+<%- include('../partials/header', { title: 'Host product list'}) %>
+
+<main class="max-w-6xl mx-auto p-3">
+
+    <h2 class="text-xl font-semibold mb-4"> Here are your hosted Products </h2>
+
+    <!-- RESPONSIVE GRID -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+
+        <% products.forEach( p => { %>
+
+            <div class="bg-white rounded-lg shadow overflow-hidden relative">
+
+                <!-- Favourite Icon -->
+                <button
+                    onclick="toggleFav(this)"
+                    class="absolute top-2 right-2 bg-white rounded-full p-1 shadow
+                           transition text-lg"
+                    title="Add to favourites"
+                >
+                    🤍
+                </button>
+
+                <!-- Product Image -->
+                <img 
+                    src="<%= p.imageUrl %>" 
+                    alt="product" 
+                    class="w-full h-32 object-cover"
+                />
+
+                <!-- Product Content -->
+                <div class="p-3">
+                    <p class="text-sm font-semibold text-gray-800 truncate">
+                        <%= p.productName %>
+                    </p>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Grocery item
+                    </p>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-green-800 font-bold text-sm">
+                            ₹ <%= p.price %>
+                        </span>
+                        <a href="/addEditProducts/<%=p.productId%>?editing=true"
+                            class="bg-green-500 text-white text-xs px-3 py-1 rounded
+                                   hover:bg-green-600 transition">
+                            Edit
+                        </a>
+                        <button
+                            class="bg-red-500 text-white text-xs px-3 py-1 rounded
+                                   hover:bg-red-600 transition">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    </div>
+
+</main>
+
+<!-- ❤️ Favourite Toggle Script -->
+<script>
+    function toggleFav(btn) {
+        if (btn.innerText === '🤍') {
+            btn.innerText = '❤️';
+            btn.classList.add('text-red-500');
+        } else {
+            btn.innerText = '🤍';
+            btn.classList.remove('text-red-500');
+        }
+    }
+</script>
+
+<%- include('../partials/footer') %>

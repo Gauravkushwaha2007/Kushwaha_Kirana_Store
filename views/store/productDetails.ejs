@@ -1,0 +1,355 @@
+<%- include('../partials/header',{title: 'Product Details'}) %>
+
+<style>
+/* 🌟 Premium Product Card with Magic Button */
+* { box-sizing: border-box; }
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* 🎨 Magic Product Card */
+.magic-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.magic-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+    background-size: 300% 100%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.magic-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+}
+
+/* 🖼️ Image Section */
+.image-section {
+    position: relative;
+}
+
+.product-image-container {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+.product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.magic-card:hover .product-image-container img {
+    transform: scale(1.08) rotate(2deg);
+}
+
+/* 📝 Details Section */
+.details-section h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.price-display {
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin: 1rem 0;
+}
+
+.description {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 1.1rem;
+}
+
+/* ✨ MAGIC FOLLOWING BUTTON */
+.magic-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    pointer-events: none;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 
+        0 12px 40px rgba(30, 41, 59, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
+    white-space: nowrap;
+}
+
+.magic-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.magic-button:hover::before {
+    opacity: 1;
+    animation: shineButton 1.5s infinite;
+}
+
+@keyframes shineButton {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.magic-button.moving {
+    box-shadow: 
+        0 20px 60px rgba(30, 41, 59, 0.6),
+        0 0 30px rgba(30, 41, 59, 0.3);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Make content pointer-events none so button works */
+.magic-card * {
+    pointer-events: auto;
+}
+
+.magic-card:hover .image-section,
+.magic-card:hover .details-section {
+    pointer-events: none;
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 16px;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    color: #1f2937;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .magic-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .magic-button {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Entrance Animation */
+@keyframes entrance {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.magic-card {
+    animation: entrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+</style>
+
+<div class="min-h-screen py-12 px-4">
+    <!-- Back Button -->
+    <a href="/" class="back-btn mb-12 inline-block">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Go Back
+    </a>
+
+    <!-- ✨ MAGIC PRODUCT CARD -->
+    <div class="magic-card relative" id="magicCard">
+        <!-- 🛒 MAGIC FOLLOWING BUTTON -->
+        <button class="magic-button" id="magicBtn">
+            🛒 Buy Now
+        </button>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
+            <!-- 🖼️ Image Section -->
+            <div class="image-section">
+                <div class="product-image-container">
+                    <img 
+                        src="<%= product.imageUrl %>" 
+                        alt="<%= product.productName %>"
+                    />
+                </div>
+            </div>
+
+            <!-- 📦 Details Section -->
+            <div class="details-section space-y-6">
+                <h1><%= product.productName %></h1>
+                
+                <div class="category-tag">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                    </svg>
+                    Grocery Item
+                </div>
+
+                <div class="price-display">₹ <%= product.price %></div>
+
+                <p class="description">
+                    🌟 Fresh and quality grocery product from Kushwaha Kirana Store. 
+                    Trusted by thousands for daily needs. Premium quality guaranteed with fast delivery!
+                </p>
+
+                <!-- Hidden Forms (for actual functionality) -->
+                <form action="/myOrders" method="POST" style="display: none;" id="cartForm">
+                    <input type="hidden" name="id" value="<%= product.productId %>">
+                </form>
+
+                <form action="/favouriteList" method="POST" style="display: none;" id="favForm">
+                    <input type="hidden" name="id" value="<%= product.productId %>">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ✨ MAGIC FOLLOWING BUTTON */
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('magicCard');
+    const button = document.getElementById('magicBtn');
+    const cartForm = document.getElementById('cartForm');
+    const favForm = document.getElementById('favForm');
+    
+    let isHovering = false;
+    
+    // 🖱️ Mouse tracking
+    card.addEventListener('mousemove', (e) => {
+        isHovering = true;
+        button.classList.add('moving');
+        
+        // Get card bounds
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate button position (with some offset for magic feel)
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const distance = Math.min(centerX, centerY);
+        const alpha = Math.atan2(y - centerY, x - centerX);
+        
+        // Dynamic radius based on cursor distance
+        const radius = Math.min(distance * 0.4, 80);
+        const buttonX = centerX + Math.cos(alpha) * radius;
+        const buttonY = centerY + Math.sin(alpha) * radius;
+        
+        button.style.transform = `
+            translate(${buttonX - button.offsetWidth/2}px, ${buttonY - button.offsetHeight/2}px)
+            scale(1.1)
+        `;
+    });
+    
+    // Mouse leave - return to center
+    card.addEventListener('mouseleave', () => {
+        isHovering = false;
+        button.classList.remove('moving');
+        button.style.transform = 'translate(-50%, -50%) scale(1.1)';
+    });
+    
+    // 🛒 Click handler
+    button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Submit cart form
+        cartForm.submit();
+    });
+    
+    // Keyboard accessibility
+    card.addEventListener('mouseenter', () => {
+        card.setAttribute('tabindex', '0');
+        card.focus();
+    });
+    
+    card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            cartForm.submit();
+        }
+    });
+    
+    // Smooth entrance
+    setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0) scale(1)';
+    }, 100);
+});
+</script>
+
+<%- include('../partials/footer') %>
