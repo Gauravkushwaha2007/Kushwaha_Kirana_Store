@@ -1,355 +1,237 @@
-<%- include('../partials/header',{title: 'Product Details'}) %>
 
+<%- include('../partials/header', { title: 'Products' }) %>
+
+
+<main class="max-w-6xl mx-auto p-3">
+
+
+    <!-- TITLE + SEARCH -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <h2 class="text-xl font-semibold">Our Products</h2>
+
+
+        <div class="relative w-full sm:w-72">
+            <input type="text" id="searchInput"
+                placeholder="Search products..."
+                onkeyup="searchProducts()"
+                class="w-full pl-10 pr-3 py-2 border rounded-lg
+                       focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <span class="absolute left-3 top-2.5 text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.3-4.3"/>
+                </svg>
+            </span>
+        </div>
+    </div>
+
+
+    <!-- CATEGORY AUTO SCROLL -->
+    <div class="relative mt-2">
+        <div class="fade-left"></div>
+        <div class="fade-right"></div>
+
+
+        <div id="categoryScroller"
+            class="flex gap-3 overflow-x-auto pb-3 scrollbar-hide select-none">
+
+
+            <button class="category-btn active">All</button>
+            <button class="category-btn">Vegetables</button>
+            <button class="category-btn">Dairy</button>
+            <button class="category-btn">Bakery</button>
+            <button class="category-btn">Snacks</button>
+            <button class="category-btn">Dal</button>
+            <button class="category-btn">Chawal</button>
+            <button class="category-btn">Aata</button>
+
+
+        </div>
+    </div>
+
+
+    <!-- PRODUCTS GRID -->
+    <div id="productGrid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+
+
+        <% products.forEach(p => { %>
+        <div class="product-card bg-white rounded-xl shadow relative overflow-hidden">
+
+
+            <!-- Favourite -->
+            <form action="/favouriteList" method="POST">
+                <button type="submit"
+                    class="absolute top-2 right-2 bg-white p-1 rounded-full shadow text-lg">
+                    🤍
+                </button>
+                <input type="hidden" name="id" value="<%= p.productId %>">
+            </form>
+
+
+            <!-- Image -->
+            <img src="<%= p.imageUrl %>"
+                 class="w-full h-32 object-cover" />
+
+
+            <!-- Content -->
+            <div class="p-3 space-y-2">
+
+
+                <p class="product-name text-sm font-semibold truncate">
+                    <%= p.productName %>
+                </p>
+
+
+                <span class="text-green-600 font-bold text-sm">
+                    ₹ <%= p.price %>
+                </span>
+
+
+                <!-- ACTION BUTTONS -->
+                <div class="flex items-center justify-between gap-2">
+
+
+    <!-- DETAILS BUTTON -->
+    <a href="/products/<%= p.productId %>"
+       class="flex items-center justify-center gap-1
+              bg-blue-500 text-white text-sm
+              px-4 py-2 rounded-lg
+              hover:bg-blue-600 transition w-full">
+
+
+        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+             stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Details
+    </a>
+
+
+    <!-- ADD TO CART BUTTON -->
+    <form action="/myOrders" method="POST" class="w-full">
+        <input type="hidden" name="id" value="<%= p.productId %>">
+
+
+        <button type="submit"
+            class="flex items-center justify-center gap-2
+                   bg-orange-500 text-white text-sm
+                   px-4 py-2 rounded-lg
+                   hover:bg-orange-600 transition w-full">
+
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+            </svg>
+
+
+            Add
+        </button>
+    </form>
+
+
+</div>
+
+
+            </div>
+        </div>
+        <% }) %>
+
+
+    </div>
+</main>
+
+
+<!-- STYLES -->
 <style>
-/* 🌟 Premium Product Card with Magic Button */
-* { box-sizing: border-box; }
+.scrollbar-hide::-webkit-scrollbar{display:none;}
+.scrollbar-hide{scrollbar-width:none;}
 
-body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+.category-btn{
+    flex-shrink:0;
+    padding:8px 18px;
+    border-radius:999px;
+    border:1px solid #e5e7eb;
+    background:white;
+    font-size:14px;
+    transition:.3s;
 }
-
-/* 🎨 Magic Product Card */
-.magic-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(25px);
-    border-radius: 24px;
-    padding: 2rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 800px;
-    margin: 0 auto;
+.category-btn.active{
+    background:black;
+    color:white;
+    transform:scale(1.08);
 }
+.category-btn:hover{transform:scale(1.05);}
 
-.magic-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
-    background-size: 300% 100%;
-    animation: gradientShift 3s ease infinite;
+
+.fade-left,.fade-right{
+    position:absolute;
+    top:0;
+    width:40px;
+    height:100%;
+    z-index:10;
+    pointer-events:none;
 }
-
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+.fade-left{
+    left:0;
+    background:linear-gradient(to right, white, transparent);
 }
-
-.magic-card:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
-}
-
-/* 🖼️ Image Section */
-.image-section {
-    position: relative;
-}
-
-.product-image-container {
-    width: 100%;
-    aspect-ratio: 1;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 20px;
-    padding: 1.5rem;
-    overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
-}
-
-.product-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.magic-card:hover .product-image-container img {
-    transform: scale(1.08) rotate(2deg);
-}
-
-/* 📝 Details Section */
-.details-section h1 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    font-weight: 800;
-}
-
-.category-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-}
-
-.price-display {
-    font-size: clamp(2rem, 6vw, 3rem);
-    font-weight: 900;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    margin: 1rem 0;
-}
-
-.description {
-    color: #64748b;
-    line-height: 1.7;
-    font-size: 1.1rem;
-}
-
-/* ✨ MAGIC FOLLOWING BUTTON */
-.magic-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    pointer-events: none;
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1rem;
-    box-shadow: 
-        0 12px 40px rgba(30, 41, 59, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
-    white-space: nowrap;
-}
-
-.magic-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-.magic-button:hover::before {
-    opacity: 1;
-    animation: shineButton 1.5s infinite;
-}
-
-@keyframes shineButton {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-.magic-button.moving {
-    box-shadow: 
-        0 20px 60px rgba(30, 41, 59, 0.6),
-        0 0 30px rgba(30, 41, 59, 0.3);
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-/* Make content pointer-events none so button works */
-.magic-card * {
-    pointer-events: auto;
-}
-
-.magic-card:hover .image-section,
-.magic-card:hover .details-section {
-    pointer-events: none;
-}
-
-/* Back Button */
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: rgba(255,255,255,0.9);
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 16px;
-    color: #6b7280;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    color: #1f2937;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .magic-card {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
-    
-    .magic-button {
-        padding: 12px 24px;
-        font-size: 0.95rem;
-    }
-}
-
-/* Entrance Animation */
-@keyframes entrance {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.magic-card {
-    animation: entrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.fade-right{
+    right:0;
+    background:linear-gradient(to left, white, transparent);
 }
 </style>
 
-<div class="min-h-screen py-12 px-4">
-    <!-- Back Button -->
-    <a href="/" class="back-btn mb-12 inline-block">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        Go Back
-    </a>
 
-    <!-- ✨ MAGIC PRODUCT CARD -->
-    <div class="magic-card relative" id="magicCard">
-        <!-- 🛒 MAGIC FOLLOWING BUTTON -->
-        <button class="magic-button" id="magicBtn">
-            🛒 Buy Now
-        </button>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
-            <!-- 🖼️ Image Section -->
-            <div class="image-section">
-                <div class="product-image-container">
-                    <img 
-                        src="<%= product.imageUrl %>" 
-                        alt="<%= product.productName %>"
-                    />
-                </div>
-            </div>
-
-            <!-- 📦 Details Section -->
-            <div class="details-section space-y-6">
-                <h1><%= product.productName %></h1>
-                
-                <div class="category-tag">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
-                    </svg>
-                    Grocery Item
-                </div>
-
-                <div class="price-display">₹ <%= product.price %></div>
-
-                <p class="description">
-                    🌟 Fresh and quality grocery product from Kushwaha Kirana Store. 
-                    Trusted by thousands for daily needs. Premium quality guaranteed with fast delivery!
-                </p>
-
-                <!-- Hidden Forms (for actual functionality) -->
-                <form action="/myOrders" method="POST" style="display: none;" id="cartForm">
-                    <input type="hidden" name="id" value="<%= product.productId %>">
-                </form>
-
-                <form action="/favouriteList" method="POST" style="display: none;" id="favForm">
-                    <input type="hidden" name="id" value="<%= product.productId %>">
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- SCRIPTS -->
 <script>
-/* ✨ MAGIC FOLLOWING BUTTON */
-document.addEventListener('DOMContentLoaded', () => {
-    const card = document.getElementById('magicCard');
-    const button = document.getElementById('magicBtn');
-    const cartForm = document.getElementById('cartForm');
-    const favForm = document.getElementById('favForm');
-    
-    let isHovering = false;
-    
-    // 🖱️ Mouse tracking
-    card.addEventListener('mousemove', (e) => {
-        isHovering = true;
-        button.classList.add('moving');
-        
-        // Get card bounds
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Calculate button position (with some offset for magic feel)
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const distance = Math.min(centerX, centerY);
-        const alpha = Math.atan2(y - centerY, x - centerX);
-        
-        // Dynamic radius based on cursor distance
-        const radius = Math.min(distance * 0.4, 80);
-        const buttonX = centerX + Math.cos(alpha) * radius;
-        const buttonY = centerY + Math.sin(alpha) * radius;
-        
-        button.style.transform = `
-            translate(${buttonX - button.offsetWidth/2}px, ${buttonY - button.offsetHeight/2}px)
-            scale(1.1)
-        `;
+function searchProducts(){
+    const v = searchInput.value.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(c=>{
+        const n = c.querySelector('.product-name').innerText.toLowerCase();
+        c.style.display = n.includes(v) ? 'block' : 'none';
     });
-    
-    // Mouse leave - return to center
-    card.addEventListener('mouseleave', () => {
-        isHovering = false;
-        button.classList.remove('moving');
-        button.style.transform = 'translate(-50%, -50%) scale(1.1)';
-    });
-    
-    // 🛒 Click handler
-    button.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Submit cart form
-        cartForm.submit();
-    });
-    
-    // Keyboard accessibility
-    card.addEventListener('mouseenter', () => {
-        card.setAttribute('tabindex', '0');
-        card.focus();
-    });
-    
-    card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            cartForm.submit();
+}
+
+
+/* AUTO SCROLL */
+const scroller = document.getElementById('categoryScroller');
+let interacting=false;
+
+
+[...scroller.children].forEach(el=>{
+    scroller.appendChild(el.cloneNode(true));
+});
+
+
+setInterval(()=>{
+    if(!interacting){
+        scroller.scrollLeft += 0.4;
+        if(scroller.scrollLeft >= scroller.scrollWidth/2){
+            scroller.scrollLeft = 0;
         }
-    });
-    
-    // Smooth entrance
-    setTimeout(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0) scale(1)';
-    }, 100);
+    }
+},16);
+
+
+['mousedown','touchstart'].forEach(e=>scroller.addEventListener(e,()=>interacting=true));
+['mouseup','touchend'].forEach(e=>scroller.addEventListener(e,()=>interacting=false));
+
+
+document.querySelectorAll('.category-btn').forEach(btn=>{
+    btn.onclick=()=>{
+        document.querySelectorAll('.category-btn')
+            .forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+    }
 });
 </script>
+
 
 <%- include('../partials/footer') %>

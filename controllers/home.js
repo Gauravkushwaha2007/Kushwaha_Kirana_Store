@@ -34,7 +34,10 @@ exports.getMyOrder = (req, res)=>{
 exports.postAddEditProducts = (req, res, next)=>{
     const { userName, userId, productName, imageUrl, price } = req.body;
     const product = new singleProduct(userName, userId, productName, imageUrl, price);
-    product.save();
+    product.save().then(()=>{
+        console.log('Product Added successfully');
+    });
+    
     res.redirect('/host/hostProductList');
 };
 

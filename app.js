@@ -33,6 +33,6 @@ app.use(errorController.pageNotFound);
 const PORT = 3000;
 mongoConnect( ()=>{
     app.listen(PORT, ()=>{
-        console.log(`server running at http://localhost:${port}`);
+        console.log(`server running at http://localhost:${PORT}`);
     });
-})
+});

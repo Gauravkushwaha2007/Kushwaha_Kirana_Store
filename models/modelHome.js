@@ -35,7 +35,7 @@
 //         });
 //     };
 
-    
+
 //     static findProductById(productID,callback){
 //         this.fetchAll(products=>{
 //             const productFound = products.find(product=> product.productId === productID);
@@ -47,7 +47,8 @@
 
 
 
-const { getDB } = require("../utils/databaseUtil"); 
+const { getDb } = require("../utils/databaseUtil"); 
+
 module.exports = class singleProduct {
     constructor(userName, userId, productName ,imageUrl, price){
         this.userName = userName;
@@ -57,8 +58,8 @@ module.exports = class singleProduct {
         this.price = price;
     };
     static save(){
-        const db = getDB();
-        return db.collection('products');
+        const db = getDb();
+        return db.collection('products').insertOne(this);
     }
 
     static fetchall(){
