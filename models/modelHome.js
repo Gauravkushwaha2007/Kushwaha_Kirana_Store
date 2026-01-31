@@ -57,16 +57,19 @@ module.exports = class singleProduct {
         this.imageUrl = imageUrl;
         this.price = price;
     };
+     
     static save(){
         const db = getDb();
         return db.collection('products').insertOne(this);
     }
 
-    static fetchall(){
-
+    static fetchAll(){
+        const db = getDb();
+        return db.collection('products').find().toArray();
     }
-    static findProductById(){
 
+    static findProductById(productId){
+        const db = collection('products').find({_id : productId}).next()
     }
     static deleteProductBYId(){
 

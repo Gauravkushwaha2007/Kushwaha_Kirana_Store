@@ -1,4 +1,3 @@
-// const allProducts = [];
 
 const Favourite = require('../models/favourite');
 const singleProduct = require('../models/modelHome'); 
@@ -10,16 +9,15 @@ exports.getAddEditProducts = (req, res)=>{
     });
 };
 
+
 exports.getEditProducts =(req, res, next)=>{
     const productId = req.params.productId;
     const editing = req.query.editing;
-
-    singleProduct.findProductById(productId, product=>{
+    singleProduct.findProductById(productId).then(product=>{
         if(!product){
             console.log('Product not found for editing');
             return res.redirect('/host/addEditProducts');
         }
-        // console.log(productId,editing,product);
         res.render('host/addEditProducts', {
             editing: editing,
             product: product
@@ -27,9 +25,11 @@ exports.getEditProducts =(req, res, next)=>{
     });
 };
 
+
 exports.getMyOrder = (req, res)=>{
     res.render('store/myOrder');
 };
+
 
 exports.postAddEditProducts = (req, res, next)=>{
     const { userName, userId, productName, imageUrl, price } = req.body;
@@ -41,21 +41,25 @@ exports.postAddEditProducts = (req, res, next)=>{
     res.redirect('/host/hostProductList');
 };
 
+
 exports.getAllProducts = (req, res)=>{
     singleProduct.fetchAll((allProducts)=>{
         res.render('store/productList',{ products: allProducts });
     });
 };
 
+
 exports.getHostProductList = (req, res)=>{
-    singleProduct.fetchAll((allProducts)=>{
+    singleProduct.fetchAll(allProducts =>{
         res.render('host/hostProductList', {products: allProducts});
     });
 };
 
+
 exports.getProductDetails = (req, res)=>{
     const productId = req.params.productId;
-    singleProduct.findProductById(productId, product =>{
+
+    singleProduct.findProductById(productId).then(product=>{
         if(!product){
             console.log('Product not Found');
             res.redirect('/store/prodcutList');
@@ -64,7 +68,7 @@ exports.getProductDetails = (req, res)=>{
             console.log('Product mil gya ye h id '+ productId);
             res.render('store/productDetails', {product});
         }
-    });
+    })
 };
 
 
@@ -102,9 +106,6 @@ exports.getMyOrders =  (req, res, next)=>{
 
 
 exports.postMyOrders = (req, res, next)=>{
-    // console.log('===== POST /myOrders =====');
-    // console.log('Full body:', req.body);
-    // console.log('Product ID:', req.body.id);
     
     if(!req.body.id){
         console.log('ERROR: Product ID missing!');
