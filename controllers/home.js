@@ -1,7 +1,7 @@
 
 const Favourite = require('../models/favourite');
 const singleProduct = require('../models/modelHome'); 
-const AddToCart = require('../models/myOrders');
+const Cart = require('../models/myOrders');
 
 exports.getAddEditProducts = (req, res)=>{
     res.render('host/addEditProducts',{
@@ -76,55 +76,55 @@ exports.getProductDetails = (req, res)=>{
 };
 
 
-exports.getFavouriteList = (req, res, next)=>{
-    Favourite.getFavourite((favourites)=>{
-        singleProduct.fetchAll((allProducts=>{
-            const favouriteProducts = allProducts.filter(product=>favourites.includes(product._id));
-            res.render('store/favouriteList',{favouriteProducts: favouriteProducts});
+exports.getFavouriteList = (req, res) => {
+  Favourite.getFavourites().then(favs => {
+    const favIds = favs.map(f => f.productId.toString());
 
-        }));
+    singleProduct.fetchAll().then(products => {
+      const favouriteProducts = products.filter(p =>
+        favIds.includes(p._id.toString())
+      );
+
+      res.render('store/favouriteList', {
+        favouriteProducts
+      });
     });
+  });
 };
 
 
 exports.postAddToFavourite = (req, res, next)=>{
-    console.log('Body:', req.body);
-    Favourite.addToFavourite(req.body.id, error=>{
-        if(error){
-            console.log('Error while adding To Favourite');
-        }
+    Favourite.addToFavourite(req.body.id)
+    .then(()=>{
         res.redirect('/favouriteList');
-    });
-
-};
-
-
-exports.getMyOrders =  (req, res, next)=>{
-    AddToCart.getSelectedItems((selected)=>{
-        singleProduct.fetchAll().then((allProducts=>{
-            const selectedProducts = allProducts.filter(product=>selected.includes(product._id));
-            res.render('store/myOrders',{selectedProducts:selectedProducts})
-        }))
     })
+    .catch( error=> console.log('error is', error));
 };
 
 
-exports.postMyOrders = (req, res, next)=>{
-    
-    if(!req.body.id){
-        console.log('ERROR: Product ID missing!');
-        return res.status(400).send('Product ID required');
-    }
-    
-    AddToCart.addToCart(req.body.id, (error)=>{
-        if(error){
-            console.log('Error while adding in cart:', error);
-            return res.status(400).send('Product already in cart');
-        }
-        console.log('Product added successfully');
-        res.redirect('/myOrders');
+exports.getMyOrders = (req, res) => {
+  Cart.getCartItems().then(items => {
+    const cartIds = items.map(i => i.productId.toString());
+
+    singleProduct.fetchAll().then(products => {
+      const selectedProducts = products.filter(p =>
+        cartIds.includes(p._id.toString())
+      );
+
+      res.render('store/myOrders', {
+        selectedProducts
+      });
     });
+  });
 };
+
+
+exports.postMyOrders = (req, res) => {
+  Cart.addToCart(req.body.id)
+    .then(() => res.redirect('/myOrders'))
+    .catch(err => console.log(err));
+};
+
 
 exports.postEditProducts = (req, res, next)=>{
     const { productId, userName, userId, productName, imageUrl, price } = req.body;
