@@ -1,19 +1,17 @@
 const express = require('express');
-const homeController = require('../controllers/home') 
+const storeController = require('../controllers/storeController') 
 const storeRouter = express.Router();
 
-console.log('postMyOrders function exists?', typeof homeController.postMyOrders);
+storeRouter.get('/', storeController.getAllProducts);
+storeRouter.get('/allProducts', storeController.getAllProducts);
+storeRouter.get('/myOrder', storeController.getMyOrder);
 
-storeRouter.get('/', homeController.getAllProducts);
-storeRouter.get('/allProducts', homeController.getAllProducts);
-storeRouter.get('/myOrder', homeController.getMyOrder);
+storeRouter.get('/favouriteList', storeController.getFavouriteList);
+storeRouter.post('/favouriteList', storeController.postAddToFavourite);
 
-storeRouter.get('/favouriteList', homeController.getFavouriteList);
-storeRouter.post('/favouriteList', homeController.postAddToFavourite);
+storeRouter.get('/myOrders', storeController.getMyOrders);
+storeRouter.post('/myOrders', storeController.postMyOrders);
 
-storeRouter.get('/myOrders', homeController.getMyOrders);
-storeRouter.post('/myOrders', homeController.postMyOrders);
-
-storeRouter.get('/products/:productId', homeController.getProductDetails);
+storeRouter.get('/products/:productId', storeController.getProductDetails);
 
 module.exports = { storeRouter };

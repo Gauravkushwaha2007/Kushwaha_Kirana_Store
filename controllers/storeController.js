@@ -1,0 +1,84 @@
+const Favourite = require('../models/favourite');
+const Product = require('../models/product');
+const Cart = require('../models/myOrders');
+
+exports.getMyOrder = (req, res)=>{
+    res.render('store/myOrder');
+};
+
+
+exports.getAllProducts = (req, res)=>{
+    Product.fetchAll()
+    .then(allProducts=>{
+        res.render('store/productList',{ products: allProducts });
+    })
+    .catch(error=>{
+        console.log(error);
+    });
+};
+
+
+exports.getProductDetails = (req, res)=>{
+    const productId = req.params.productId;
+
+    Product.findProductById(productId).then(product=>{
+        if(!product){
+            console.log('Product not Found');
+            res.redirect('/store/prodcutList');
+        }
+        else{
+            console.log('Product mil gya ye h id '+ productId);
+            res.render('store/productDetails', { product });
+        }
+    })
+};
+
+
+exports.getFavouriteList = (req, res) => {
+  Favourite.getFavourites().then(favs => {
+    const favIds = favs.map(f => f.productId.toString());
+
+    Product.fetchAll().then(products => {
+      const favouriteProducts = products.filter(p =>
+        favIds.includes(p._id.toString())
+      );
+
+      res.render('store/favouriteList', {
+        favouriteProducts
+      });
+    });
+  });
+};
+
+
+exports.postAddToFavourite = (req, res, next)=>{
+    Favourite.addToFavourite(req.body.id)
+    .then(()=>{
+        res.redirect('/favouriteList');
+    })
+    .catch( error=> console.log('error is', error));
+};
+
+
+exports.getMyOrders = (req, res) => {
+  Cart.getCartItems().then(items => {
+    const cartIds = items.map(i => i.productId.toString());
+
+    Product.fetchAll().then(products => {
+      const selectedProducts = products.filter(p =>
+        cartIds.includes(p._id.toString())
+      );
+
+      res.render('store/myOrders', {
+        selectedProducts
+      });
+    });
+  });
+};
+
+
+exports.postMyOrders = (req, res) => {
+  Cart.addToCart(req.body.id)
+    .then(() => res.redirect('/myOrders'))
+    .catch(err => console.log(err));
+};
