@@ -16,7 +16,7 @@ module.exports = class Favourite {
             }
         });
     };
-    
+
     
     static getFavourite(callback){
         fs.readFile(favouriteDataPath, (err,data)=>{

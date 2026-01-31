@@ -5,7 +5,7 @@
         <%= editing? "Edit" : "Add" %> Product in Kushwaha Kirana Store
     </h2>
     <form action="/<%=editing? 'addEditProducts' : 'addProduct'%> " method="post" class="space-y-4">
-        <input type="text" value="<%= editing? product.productId : '' %>">
+        <input type="text" value="<%= editing? product._id : '' %>">
         <input 
             type="text" 
             name="userName" 

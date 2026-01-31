@@ -38,7 +38,7 @@
 
 //     static findProductById(productID,callback){
 //         this.fetchAll(products=>{
-//             const productFound = products.find(product=> product.productId === productID);
+//             const productFound = products.find(product=> product._id === productID);
 //             callback(productFound);
 //         });
 //     };
@@ -48,19 +48,40 @@
 
 
 const { getDb } = require("../utils/databaseUtil"); 
+const { ObjectId } = require('mongodb');
 
 module.exports = class singleProduct {
-    constructor(userName, userId, productName ,imageUrl, price){
+    constructor(userName, userId, productName ,imageUrl, price, _id){
         this.userName = userName;
         this.userId = userId;
         this.productName = productName;
         this.imageUrl = imageUrl;
         this.price = price;
+        if(_id){
+            this._id = _id;
+        }
     };
      
-    static save(){
+    save(){
         const db = getDb();
-        return db.collection('products').insertOne(this);
+
+        if(this._id){
+             //update
+            return db.collection('products')
+            .updateOne(
+                { _id: new ObjectId(_id) }, 
+                { $set: {
+                    userName: this.userName,
+                    userId: this.userId,
+                    productName: this.productName,
+                    imageUrl: this.imageUrl,
+                    price: this.price
+                }}
+            );
+        }
+        else{ // insert
+            return db.collection('products').insertOne(this);
+        }
     }
 
     static fetchAll(){
@@ -69,9 +90,15 @@ module.exports = class singleProduct {
     }
 
     static findProductById(productId){
-        const db = collection('products').find({_id : productId}).next()
+        const db = getDb();
+        return db.collection('products')
+        .find({_id : new ObjectId(productId)})
+        .next();
     }
-    static deleteProductBYId(){
 
+    static deleteProductBYId(){
+        const db = getDb();
+        db.collection('products')
+        .deleteOne({ _id: new ObjectId(productId) });
     }
 };

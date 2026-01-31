@@ -43,14 +43,18 @@ exports.postAddEditProducts = (req, res, next)=>{
 
 
 exports.getAllProducts = (req, res)=>{
-    singleProduct.fetchAll((allProducts)=>{
+    singleProduct.fetchAll()
+    .then(allProducts=>{
         res.render('store/productList',{ products: allProducts });
+    })
+    .catch(error=>{
+        console.log(error);
     });
 };
 
 
 exports.getHostProductList = (req, res)=>{
-    singleProduct.fetchAll(allProducts =>{
+    singleProduct.fetchAll().then(allProducts =>{
         res.render('host/hostProductList', {products: allProducts});
     });
 };
@@ -66,7 +70,7 @@ exports.getProductDetails = (req, res)=>{
         }
         else{
             console.log('Product mil gya ye h id '+ productId);
-            res.render('store/productDetails', {product});
+            res.render('store/productDetails', { product });
         }
     })
 };
@@ -75,7 +79,7 @@ exports.getProductDetails = (req, res)=>{
 exports.getFavouriteList = (req, res, next)=>{
     Favourite.getFavourite((favourites)=>{
         singleProduct.fetchAll((allProducts=>{
-            const favouriteProducts = allProducts.filter(product=>favourites.includes(product.productId));
+            const favouriteProducts = allProducts.filter(product=>favourites.includes(product._id));
             res.render('store/favouriteList',{favouriteProducts: favouriteProducts});
 
         }));
@@ -97,8 +101,8 @@ exports.postAddToFavourite = (req, res, next)=>{
 
 exports.getMyOrders =  (req, res, next)=>{
     AddToCart.getSelectedItems((selected)=>{
-        singleProduct.fetchAll((allProducts=>{
-            const selectedProducts = allProducts.filter(product=>selected.includes(product.productId));
+        singleProduct.fetchAll().then((allProducts=>{
+            const selectedProducts = allProducts.filter(product=>selected.includes(product._id));
             res.render('store/myOrders',{selectedProducts:selectedProducts})
         }))
     })
@@ -125,9 +129,11 @@ exports.postMyOrders = (req, res, next)=>{
 exports.postEditProducts = (req, res, next)=>{
     const { productId, userName, userId, productName, imageUrl, price } = req.body;
     const product = new singleProduct(userName, userId, productName, imageUrl, price);
-    product.productId = productId;
+    product._id = productId;
     
-    product.save();
+    product.save().then(result=>{
+        console.log(result);
+    });
     res.redirect('/host/hostProductList');
 };
 
