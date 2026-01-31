@@ -130,3 +130,5 @@ exports.postEditProducts = (req, res, next)=>{
     product.save();
     res.redirect('/host/hostProductList');
 };
+
+
