@@ -51,11 +51,11 @@
 
             <!-- Favourite -->
             <form action="/favouriteList" method="POST">
+                <input type="hidden" name="productId" value="<%= p._id %>">
                 <button type="submit"
                     class="absolute top-2 right-2 bg-white p-1 rounded-full shadow text-lg">
                     🤍
                 </button>
-                <input type="hidden" name="id" value="<%= p.productId %>">
             </form>
 
             <!-- Image -->

@@ -47,9 +47,9 @@ module.exports = class Product {
         .next();
     }
 
-    static deleteProductBYId(){
+    static deleteProductBYId(productId){
         const db = getDb();
-        db.collection('products')
+        return db.collection('products')
         .deleteOne({ _id: new ObjectId(productId) });
     }
 };

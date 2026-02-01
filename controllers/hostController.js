@@ -51,3 +51,15 @@ exports.postEditProducts = (req, res, next)=>{
     });
     res.redirect('/host/hostProductList');
 };
+
+
+exports.postDeleteProduct = (req, res, next)=>{
+    const productId = req.body.productId;
+
+    Product.deleteProductBYId(productId)
+    .then(()=>{
+        console.log('Product Deleted successfully');
+        res.redirect('/host/hostProductList');
+    })
+    .catch( error=> console.log("Can't delete product", error) );
+}

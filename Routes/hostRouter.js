@@ -7,5 +7,6 @@ hostRouter.post('/addEditProducts', hostController.postAddEditProducts);
 hostRouter.get('/hostProductList', hostController.getHostProductList);
 hostRouter.get('/addEditProducts/:productId', hostController.getEditProducts);
 hostRouter.post('/addEditProducts', hostController.postEditProducts);
+hostRouter.post('/deleteProduct', hostController.postDeleteProduct);
 
 module.exports = { hostRouter };

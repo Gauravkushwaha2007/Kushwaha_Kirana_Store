@@ -36,6 +36,7 @@ exports.getProductDetails = (req, res)=>{
 
 exports.getFavouriteList = (req, res) => {
   Favourite.getFavourites().then(favs => {
+    console.log('Favourite', favs);
     const favIds = favs.map(f => f.productId.toString());
 
     Product.fetchAll().then(products => {
@@ -52,7 +53,7 @@ exports.getFavouriteList = (req, res) => {
 
 
 exports.postAddToFavourite = (req, res, next)=>{
-    Favourite.addToFavourite(req.body.id)
+    Favourite.addToFavourite(req.body.productId)
     .then(()=>{
         res.redirect('/favouriteList');
     })
