@@ -9,7 +9,7 @@ exports.getAddEditProducts = (req, res)=>{
 
 exports.getEditProducts =(req, res, next)=>{
     const productId = req.params.productId;
-    const editing = req.query.editing;
+    const editing = req.query.editing === 'true';
     Product.findProductById(productId).then(product=>{
         if(!product){
             console.log('Product not found for editing');
