@@ -13,5 +13,6 @@ storeRouter.get('/myOrders', storeController.getMyOrders);
 storeRouter.post('/myOrders', storeController.postMyOrders);
 
 storeRouter.get('/products/:productId', storeController.getProductDetails);
+storeRouter.post('/removeProductFromCart', storeController.postRemoveProductFromCart);
 
 module.exports = { storeRouter };

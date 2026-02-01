@@ -10,8 +10,14 @@ module.exports = class Cart {
         });
     }
 
+    static removeFromCart(productId) {
+        const db  = getDb();
+        return db.collection('Cart')
+        .deleteOne({productId : new ObjectId(productId)});
+    }
+
     static getCartItems(){
         const db = getDb();
-        return db.collection('favourites').find().toArray();
+        return db.collection('Cart').find().toArray();
     }
 };

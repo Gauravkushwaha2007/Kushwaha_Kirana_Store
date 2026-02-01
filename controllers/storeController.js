@@ -83,3 +83,14 @@ exports.postMyOrders = (req, res) => {
     .then(() => res.redirect('/myOrders'))
     .catch(err => console.log(err));
 };
+
+exports.postRemoveProductFromCart = (req, res, next) =>{
+  const productId = req.body.productId;
+
+  Cart.removeFromCart(productId)
+    .then(()=>{
+    console.log('Product Remove from your Cart');
+    res.redirect('/store/myOrders');
+  })
+  .catch(error => console.log("Couldn't Delete product from your cart", error));
+}
