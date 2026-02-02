@@ -2,121 +2,122 @@
 
 
 <div class="max-w-6xl mx-auto px-4 py-8">
-
-
   <!-- Back -->
   <a href="/" class="text-sm text-gray-500 hover:text-black mb-6 inline-block">
     ← Go Home
   </a>
 
-
   <!-- Product Wrapper -->
   <div class="bg-white rounded-2xl shadow-lg p-5 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
 
+        <!-- 🖼 IMAGE SECTION -->
+        <div class="flex flex-col items-center gap-4">
 
-    <!-- 🖼 IMAGE SECTION -->
-    <div class="flex justify-center items-center">
-      <div class="bg-gray-100 rounded-xl p-4 shadow-inner
-                  transition-transform duration-300 hover:scale-105">
-        <img
-          src="<%= product.imageUrl %>"
-          alt="<%= product.productName %>"
-          class="w-full max-h-96 object-contain rounded-lg"
-        />
-      </div>
-    </div>
+          <!-- MAIN IMAGE -->
+          <div class="bg-gray-100 rounded-xl p-4 shadow-inner w-full">
+            <img
+              id="mainImage"
+              src="/<%= product.images[0] %>"
+              class="w-full max-h-96 object-contain rounded-lg"
+            />
+          </div>
+
+          <!-- THUMBNAILS -->
+          <div class="flex gap-3 overflow-x-auto">
+
+            <% product.images.forEach((img, index) => { %>
+              <img
+                src="/<%= img %>"
+                onclick="changeImage('<%= img %>')"
+                class="w-20 h-20 object-cover rounded-lg cursor-pointer
+                      border hover:border-blue-500 transition"
+              />
+            <% }) %>
+
+          </div>
+
+        </div>
 
 
     <!-- 📦 DETAILS SECTION -->
     <div class="flex flex-col gap-4">
 
-
       <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
         <%= product.productName %>
       </h1>
-
 
       <p class="text-sm text-gray-500">
         Category: Grocery Item
       </p>
 
-
       <div class="text-3xl font-semibold text-green-800">
         ₹ <%= product.price %>
       </div>
-
 
       <p class="text-gray-600 leading-relaxed">
         Fresh and quality grocery product available at Kushwaha Kirana Store.
         Trusted product for daily needs.
       </p>
 
-
       <!-- Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+      <div class="flex flex-col sm:flex-row gap-4 mt-4">
 
-
-    <!-- 🛒 Add to Cart -->
-    <form action="/myOrders" method="POST">
-      <input type="hidden" name="id" value="<%= product._id %>">
-      <button type="submit"
-          class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+        <!-- 🛒 Add to Cart -->
+        <form action="/myOrders" method="POST">
+          <input type="hidden" name="id" value="<%= product._id %>">
+          <button type="submit"
+            class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl
               bg-orange-500 text-white font-medium
               hover:bg-orange-600 transition">
               
-          <!-- Cart Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg"
+            <!-- Cart Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5"
-              fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4
-                M7 13l-1.35 2.7A1 1 0 007.55 17h9.9
-                M7 13L5.4 5M16 17a1 1 0 100 2
-                1 1 0 000-2zM8 17a1 1 0 100 2
-                1 1 0 000-2z" />
+                fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4
+                  M7 13l-1.35 2.7A1 1 0 007.55 17h9.9
+                  M7 13L5.4 5M16 17a1 1 0 100 2
+                  1 1 0 000-2zM8 17a1 1 0 100 2
+                  1 1 0 000-2z" />
             </svg>
-          Add to Cart
-      </button>
-    </form>
+              Add to Cart
+          </button>
+        </form>
 
+          <!-- ⚡ Buy Now -->
+          <button
+              class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+                border border-gray-300 font-medium
+                hover:bg-gray-100 transition">
+              <!-- Lightning Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            <a href="/myOrders">Buy Now</a>
+          </button>
+      </div>
 
-    <!-- ⚡ Buy Now -->
-    <button
-        class="flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-            border border-gray-300 font-medium
-            hover:bg-gray-100 transition">
-
-
-        <!-- Lightning Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-
-
-       <a href="/myOrder">Buy Now</a>
-    </button>
-
-
-    </div>
-
-     <form action="/favouriteList" method="POST">
-      <button type="submit" class=" p-4
-        border border-gray-300 font-medium
-        hover:bg-gray-100 transition">Add 💝
-      </button>
-      <input type="hidden" name="id" value="<%= product._id %>">
-    </form>
+      <form action="/favouriteList" method="POST">
+        <button type="submit" class=" p-4
+          border border-gray-300 font-medium
+          hover:bg-gray-100 transition">Add 💝
+        </button>
+        <input type="hidden" name="id" value="<%= product._id %>">
+      </form>
     </div>
 
   </div>
-
-
 </div>
 
+<script>
+  function changeImage(imgUrl) {
+    document.getElementById('mainImage').src = imgUrl;
+  }
+</script>
 
 <%- include('../partials/footer') %>

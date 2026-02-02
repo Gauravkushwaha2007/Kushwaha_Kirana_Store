@@ -46,9 +46,9 @@
         <!-- ✅ IMAGE URL FIELD -->
         <input 
             type="text" 
-            name="imageUrl" 
-            value="<%= editing? product.imageUrl : '' %>"
-            placeholder="Enter product image URL"
+            name="images" 
+            value="<%= editing ? product.images.join(',') : '' %>"
+            placeholder="Enter product image URL (comma seperated)"
             required
             class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
         >

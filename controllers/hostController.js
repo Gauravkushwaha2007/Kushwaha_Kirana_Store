@@ -24,8 +24,10 @@ exports.getEditProducts =(req, res, next)=>{
 
 
 exports.postAddEditProducts = (req, res, next)=>{
-    const { userName, userId, productName, imageUrl, price } = req.body;
-    const product = new Product(userName, userId, productName, imageUrl, price);
+    const { userName, userId, productName, images, price } = req.body;
+    const imageArray = images.split(',').map(img=> img.trim());
+
+    const product = new Product(userName, userId, productName, imageArray, price);
     product.save().then(()=>{
         console.log('Product Added successfully');
     });
@@ -42,8 +44,10 @@ exports.getHostProductList = (req, res)=>{
 
 
 exports.postEditProducts = (req, res, next)=>{
-    const { productId, userName, userId, productName, imageUrl, price } = req.body;
-    const product = new Product(userName, userId, productName, imageUrl, price);
+    const { productId, userName, userId, productName, images, price } = req.body;
+    const imageArray = images.split(',').map(img=> img.trim());
+
+    const product = new Product(userName, userId, productName, imageArray, price);
     product._id = productId;
     
     product.save().then(result=>{
@@ -61,5 +65,5 @@ exports.postDeleteProduct = (req, res, next)=>{
         console.log('Product Deleted successfully');
         res.redirect('/host/hostProductList');
     })
-    .catch( error=> console.log("Can't delete product", error) );
+    .catch( error=> console.log("Can't delete product", error));
 }

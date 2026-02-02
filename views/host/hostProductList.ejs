@@ -11,19 +11,9 @@
 
             <div class="bg-white rounded-lg shadow overflow-hidden relative">
 
-                <!-- Favourite Icon -->
-                <button
-                    onclick="toggleFav(this)"
-                    class="absolute top-2 right-2 bg-white rounded-full p-1 shadow
-                           transition text-lg"
-                    title="Add to favourites"
-                >
-                    🤍
-                </button>
-
                 <!-- Product Image -->
                 <img 
-                    src="<%= p.imageUrl %>" 
+                    src="/<%= p.images[0] %>" 
                     alt="product" 
                     class="w-full h-32 object-cover"
                 />
@@ -66,18 +56,5 @@
     </div>
 
 </main>
-
-<!-- ❤️ Favourite Toggle Script -->
-<script>
-    function toggleFav(btn) {
-        if (btn.innerText === '🤍') {
-            btn.innerText = '❤️';
-            btn.classList.add('text-red-500');
-        } else {
-            btn.innerText = '🤍';
-            btn.classList.remove('text-red-500');
-        }
-    }
-</script>
 
 <%- include('../partials/footer') %>
