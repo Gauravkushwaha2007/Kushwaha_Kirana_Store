@@ -12,4 +12,10 @@ module.exports = class Favourite{
         const db = getDb();
         return db.collection('favourites').find().toArray();
     }
+
+    static removeFromFavourite (productId){
+        const db = getDb();
+        return db.collection('favourites')
+        .deleteOne({productId: new ObjectId(productId)})
+    }
 };

@@ -4,7 +4,10 @@
     <h2 class="text-xl font-semibold mb-4 text-gray-800">
         <%= editing? "Edit" : "Add" %> Product in Kushwaha Kirana Store
     </h2>
-    <form action="/addEditProducts" method="post" class="space-y-4">
+    <form 
+        action="<%= editing ? '/editProducts' : '/addEditProducts' %>" 
+        method="post"
+        class="space-y-4">
 
         <input 
             type="hidden" 
@@ -61,6 +64,18 @@
             required
             class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
         >
+        <!-- DESCRIPTION -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+                Product Description
+            </label>
+            <textarea
+                name="description"
+                rows="4"
+                class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring"
+                placeholder="Product ka description likho..."
+            ><%= editing && product ? product.description : '' %></textarea>
+        </div>
 
         <button 
             type="submit"

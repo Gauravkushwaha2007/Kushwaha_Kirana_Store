@@ -12,8 +12,8 @@ exports.getEditProducts =(req, res, next)=>{
     const editing = req.query.editing === 'true';
     Product.findProductById(productId).then(product=>{
         if(!product){
-            console.log('Product not found for editing');
-            return res.redirect('/host/addEditProducts');
+            // console.log('Product not found for editing');
+            return res.redirect('/addEditProducts');
         }
         res.render('host/addEditProducts', {
             editing: editing,
@@ -24,15 +24,15 @@ exports.getEditProducts =(req, res, next)=>{
 
 
 exports.postAddEditProducts = (req, res, next)=>{
-    const { userName, userId, productName, images, price } = req.body;
+    const { userName, userId, productName, images, price, description} = req.body;
     const imageArray = images.split(',').map(img=> img.trim());
 
-    const product = new Product(userName, userId, productName, imageArray, price);
+    const product = new Product(userName, userId, productName, imageArray, price, description);
     product.save().then(()=>{
-        console.log('Product Added successfully');
+        // console.log('Product Added successfully');
     });
     
-    res.redirect('/host/hostProductList');
+    res.redirect('/hostProductList');
 };
 
 
@@ -44,16 +44,15 @@ exports.getHostProductList = (req, res)=>{
 
 
 exports.postEditProducts = (req, res, next)=>{
-    const { productId, userName, userId, productName, images, price } = req.body;
+    const { productId, userName, userId, productName, images, price ,description} = req.body;
     const imageArray = images.split(',').map(img=> img.trim());
 
-    const product = new Product(userName, userId, productName, imageArray, price);
-    product._id = productId;
+    const product = new Product( userName, userId, productName, imageArray, price, description, productId);
     
-    product.save().then(result=>{
-        console.log(result);
-    });
-    res.redirect('/host/hostProductList');
+    product.save().then(()=>{
+        res.redirect('/hostProductList');
+    })
+    .catch(error=>console.log(error))
 };
 
 
@@ -62,8 +61,8 @@ exports.postDeleteProduct = (req, res, next)=>{
 
     Product.deleteProductBYId(productId)
     .then(()=>{
-        console.log('Product Deleted successfully');
-        res.redirect('/host/hostProductList');
+        // console.log('Product Deleted successfully');
+        res.redirect('/hostProductList');
     })
     .catch( error=> console.log("Can't delete product", error));
 }

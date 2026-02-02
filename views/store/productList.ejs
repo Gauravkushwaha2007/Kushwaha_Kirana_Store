@@ -48,6 +48,7 @@
 
         <% products.forEach(p => { %>
         <div class="product-card bg-white rounded-xl shadow relative overflow-hidden">
+            <a href="/products/<%= p._id %>">
 
             <!-- Favourite -->
             <form action="/favouriteList" method="POST">
@@ -110,7 +111,7 @@
                 </button>
             </form>
          </div>
-
+        </a>
         </div>
     </div>
         <% }) %>

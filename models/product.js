@@ -3,36 +3,31 @@ const { ObjectId } = require('mongodb');
 
 module.exports = class Product {
 
-    constructor(userName, userId, productName ,images, price, _id){
+    constructor(userName, userId, productName, images, price, description, id) {
         this.userName = userName;
         this.userId = userId;
         this.productName = productName;
         this.images = images;
         this.price = price;
-        if(_id){
-            this._id = _id;
-        }
-    };
-     
-    save() {
-    const db = getDb();
-    if (this._id) { // UPDATE
-        return db.collection('products').updateOne(
-            { _id: new ObjectId(this._id) },
-            { $set: {
-                userName: this.userName,
-                userId: this.userId,
-                productName: this.productName,
-                images: this.images,
-                price: this.price
-                }
-            }
-        );
+        this.description = description;
+        this._id = id ? new ObjectId(id) : null;
     }
-    else{ // INSERT
+
+    
+    save() {
+        const db = getDb();
+        if (this._id) {
+            // ✅ EDIT CASE
+            return db.collection('products')
+                .updateOne(
+                    { _id: this._id },
+                    { $set: this }
+                );
+        }
+        // ✅ ADD CASE
         return db.collection('products').insertOne(this);
     }
-}
+
 
     static fetchAll(){
         const db = getDb();

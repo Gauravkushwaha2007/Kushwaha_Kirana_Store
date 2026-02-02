@@ -23,11 +23,11 @@ exports.getProductDetails = (req, res)=>{
 
     Product.findProductById(productId).then(product=>{
         if(!product){
-            console.log('Product not Found');
-            res.redirect('/store/prodcutList');
+            // console.log('Product not Found');
+            res.redirect('/prodcutList');
         }
         else{
-            console.log('Product mil gya ye h id '+ productId);
+            // console.log('Product mil gya ye h id '+ productId);
             res.render('store/productDetails', { product });
         }
     })
@@ -36,7 +36,7 @@ exports.getProductDetails = (req, res)=>{
 
 exports.getFavouriteList = (req, res) => {
   Favourite.getFavourites().then(favs => {
-    console.log('Favourite', favs);
+    // console.log('Favourite', favs);
     const favIds = favs.map(f => f.productId.toString());
 
     Product.fetchAll().then(products => {
@@ -89,8 +89,18 @@ exports.postRemoveProductFromCart = (req, res, next) =>{
 
   Cart.removeFromCart(productId)
     .then(()=>{
-    console.log('Product Remove from your Cart');
-    res.redirect('/store/myOrders');
+    // console.log('Product Remove from your Cart');
+    res.redirect('/myOrders');
   })
   .catch(error => console.log("Couldn't Delete product from your cart", error));
+}
+
+
+exports.postRemoveFromFavourite = (req, res)=>{
+  const productId = req.body.productId;
+  Favourite.removeFromFavourite(productId).then(()=>{
+    // console.log('Product Removed from FavouriteList');
+    res.redirect('/favouriteList');
+  })
+  .catch(error=> console.log(error));
 }
