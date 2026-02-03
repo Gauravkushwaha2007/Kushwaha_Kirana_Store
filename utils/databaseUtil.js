@@ -2,14 +2,15 @@ const mongodb = require('mongodb');
 
 const MongoClient = mongodb.MongoClient;
 
-const MONGO_URL = "mongodb+srv://gaurav:gaurav@cluster0.nco3hgk.mongodb.net/?appName=Cluster0";
+const MONGO_URL = process.env.MONGO_URL
 
 let _db;
 
 const mongoConnect = (callback)=>{
-    MongoClient.connect(MONGO_URL).then(client=>{
-        // console.log(client);
+    MongoClient.connect(MONGO_URL)
+    .then(client=>{
         _db = client.db('KushwahaKirnaStore');
+        console.log('Mongo DB connected');
         callback();
     })
     .catch(error=>{

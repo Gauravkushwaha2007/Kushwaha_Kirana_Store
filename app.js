@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { storeRouter } = require('./Routes/storeRouter');
@@ -11,22 +12,20 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Debug middleware
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-
-});
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Debug middleware
+// app.use((req, res, next) => {
+//     console.log(`${req.method} ${req.path}`);
+//     next();
+
+// });
 
 
 // routes
 app.use(storeRouter);
 app.use(hostRouter);
-
-// 404 sabse last(error wala);
 app.use(errorController.pageNotFound);
 
 
