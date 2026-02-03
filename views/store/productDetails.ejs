@@ -1,100 +1,104 @@
-<%- include('../partials/header',{title: product.productName}) %>
+<%- include('../partials/header',{ title: product.productName }) %>
 
-<div class="max-w-7xl mx-auto px-4 py-10">
-  <!-- Breadcrumb -->
-  <p class="text-sm text-gray-400 mb-4">
-    Home / Products / <span class="text-gray-700"><%= product.productName %></span>
-  </p>
+<div class="bg-gray-100 py-10">
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
 
-  <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-
-    <!-- IMAGE GALLERY -->
-    <div>
-      <!-- Main Image -->
-      <div class="bg-gray-50 rounded-2xl p-6 flex items-center justify-center">
-        <img
-          id="mainImage"
-          src="/<%= product.images[0] %>"
-          class="max-h-[420px] object-contain transition duration-300"
-        />
-      </div>
+    <!-- IMAGE SECTION -->
+    <div class="bg-white rounded-2xl overflow-hidden shadow">
+      <img
+        id="mainImage"
+        src="/<%= product.images[0] %>"
+        alt="<%= product.productName %>"
+        class="w-full h-[420px] object-contain bg-gray-50"
+      />
 
       <!-- Thumbnails -->
-      <div class="flex gap-3 mt-4 overflow-x-auto">
+      <div class="flex gap-3 p-4 overflow-x-auto">
         <% product.images.forEach(img => { %>
           <img
             src="/<%= img %>"
             onclick="changeImage('/<%= img %>')"
             class="w-20 h-20 object-cover rounded-xl cursor-pointer
-              border-2 border-transparent hover:border-blue-500
-              transition"
+                   border hover:border-black transition"
           />
         <% }) %>
       </div>
     </div>
 
-    <!-- PRODUCT INFO -->
-    <div class="flex flex-col gap-5">
+    <!-- PRODUCT DETAILS -->
+    <div class="bg-white rounded-2xl shadow p-6 space-y-5">
 
       <!-- Title -->
-      <h1 class="text-3xl font-bold text-gray-900">
+      <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
         <%= product.productName %>
       </h1>
 
-      <!-- Rating (Fake but real feel 😎) -->
-      <div class="flex items-center gap-2 text-yellow-400">
-        ★★★★☆ <span class="text-gray-500 text-sm">(124 ratings)</span>
+      <!-- Rating -->
+      <div class="flex items-center gap-2 text-sm text-gray-600">
+        <span class="text-yellow-500">★★★★☆</span>
+        <span>4.3 (124 reviews)</span>
       </div>
 
       <!-- Price -->
-      <div class="text-4xl font-extrabold text-green-700">
-        ₹ <%= product.price %>
+      <div class="flex items-center gap-4">
+        <span class="text-3xl font-bold text-gray-900">
+          ₹ <%= product.price %>
+        </span>
+        <span class="line-through text-gray-400">
+          ₹ <%= product.price + 200 %>
+        </span>
+        <span class="text-green-600 font-medium">
+          Limited offer
+        </span>
       </div>
 
       <!-- Description -->
-      <p class="text-gray-600 leading-relaxed">
+      <p class="text-gray-700 leading-relaxed">
         <%= product.description %>
       </p>
 
-      <!-- Highlights -->
-      <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
-        <li>Fresh & quality assured</li>
-        <li>Trusted by local customers</li>
-        <li>Fast delivery available</li>
-      </ul>
+      <!-- Quantity (UI only) -->
+      <div class="flex items-center gap-3">
+        <span class="font-medium">Qty:</span>
+        <div class="flex items-center border rounded-lg">
+          <button class="px-3 py-1">−</button>
+          <span class="px-4">1</span>
+          <button class="px-3 py-1">+</button>
+        </div>
+      </div>
 
       <!-- ACTION BUTTONS -->
-      <div class="flex flex-col sm:flex-row gap-3 mt-4">
+      <div class="flex gap-4 pt-4">
 
         <!-- Add to Cart -->
-        <form action="/myOrders" method="POST" class="w-full">
+        <form action="/myOrders" method="POST" class="flex-1">
           <input type="hidden" name="id" value="<%= product._id %>">
-          <button type="submit"
-            class="w-full py-7 rounded-xl text-white font-semibold
-                   bg-orange-500 hover:bg-orange-600 transition
-                   shadow-lg">
-            🛒 Add to Cart
+          <button
+            type="submit"
+            class="w-full bg-black text-white py-3 rounded-xl
+                   font-medium hover:bg-gray-800 transition">
+            Add to Cart
           </button>
         </form>
 
-        <!-- Buy Now -->
-        <a href="/myOrders"
-          class="w-full py-7 rounded-xl font-semibold text-center
-                 border border-gray-300 hover:bg-gray-100 transition">
-          ⚡ Buy Now
-        </a>
+        <!-- Favourite -->
+        <form action="/favouriteList" method="POST">
+          <input type="hidden" name="productId" value="<%= product._id %>">
+          <button
+            type="submit"
+            class="border rounded-xl px-4 text-xl hover:bg-gray-100 transition">
+            ❤️
+          </button>
+        </form>
 
       </div>
 
-      <!-- Favourite -->
-      <form action="/favouriteList" method="POST" class="mt-4">
-        <input type="hidden" name="id" value="<%= product._id %>">
-        <button type="submit"
-          class="flex items-center gap-2 text-red-500
-            hover:text-red-600 transition text-lg">
-          ❤️ Add to Favourite
-        </button>
-      </form>
+      <!-- TRUST INFO -->
+      <div class="pt-4 text-sm text-gray-600 space-y-1">
+        <p>✔ Cash on Delivery available</p>
+        <p>✔ 7 Days easy return</p>
+        <p>✔ Free delivery above ₹999</p>
+      </div>
 
     </div>
 
