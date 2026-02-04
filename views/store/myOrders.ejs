@@ -1,4 +1,4 @@
-<%- include('../partials/header', { title: 'My Items' }) %>
+﻿<%- include('../partials/header', { title: 'My Items' }) %>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
 
@@ -31,16 +31,37 @@
             total += Number(p.price);
         %>
 
-        <a href="/products/<%= p._id %>"
+        <a href="#"
            class="group bg-white rounded-2xl shadow-sm hover:shadow-lg
                   transition overflow-hidden relative block">
 
             <!-- IMAGE -->
             <div class="overflow-hidden">
+                <!-- COUNTER -->
+                <div class="absolute top-2 right-2 bg-white rounded-lg shadow flex items-center overflow-hidden"
+                    data-product-id="<%= p._id %>">
+
+                    <button type="button"
+                        class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
+                        onclick="decreaseQty('<%= p._id %>')">
+                        −
+                    </button>
+
+                    <span id="qty-<%= p._id %>"
+                        class="px-3 text-sm font-semibold">
+                        1
+                    </span>
+
+                    <button type="button"
+                        class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
+                        onclick="increaseQty('<%= p._id %>')">
+                        +
+                    </button>
+                </div>
+
                 <img src="/<%= p.images[0] %>"
                      alt="<%= p.productName %>"
-                     class="w-full h-32 sm:h-36 object-cover
-                            group-hover:scale-105 transition duration-300" />
+                     class="w-full h-32 sm:h-36 object-cover" />
             </div>
 
             <!-- DETAILS -->
@@ -50,7 +71,9 @@
                     <%= p.productName %>
                 </p>
 
-                <span class="text-green-600 font-bold text-sm">
+                <span id="price-<%= p._id %>"
+                    class="text-green-600 font-bold text-sm"
+                    data-price = "<%= p.price %>">
                     ₹ <%= p.price %>
                 </span>
 
@@ -79,7 +102,7 @@
             <span class="text-lg font-semibold text-gray-700">
                 Total Amount
             </span>
-            <span class="text-2xl font-bold text-green-700">
+            <span id="total-amount" class="text-2xl font-bold text-green-700">
                 ₹ <%= total %>
             </span>
         </div>
@@ -100,5 +123,60 @@
     <% } %>
 
 </section>
+
+<script>
+    const quantities = {};
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('[id^="price-"]').forEach((el) => {
+            const productId = el.id.replace('price-', '');
+            const base = Number(el.dataset.price) || 0;
+            const qty = quantities[productId] || 1;
+            total += base * qty;
+        });
+        const totalEl = document.getElementById('total-amount');
+        if (totalEl) {
+            totalEl.innerText = `₹ ${total}`;
+        }
+    }
+
+    function updatePrice(productId) {
+        const priceEl = document.getElementById(`price-${productId}`);
+        const base = Number(priceEl.dataset.price);
+        const qty = quantities[productId] || 1;
+        priceEl.innerText = `₹ ${base * qty}`;
+        updateTotal();
+    }
+
+    function increaseQty(productId) {
+        if (!quantities[productId]) {
+            quantities[productId] = 1;
+        }
+        quantities[productId]++;
+        document.getElementById(`qty-${productId}`).innerText = quantities[productId];
+        updatePrice(productId);
+    }
+
+    function decreaseQty(productId) {
+        if (!quantities[productId]) {
+            quantities[productId] = 1;
+        }
+        if (quantities[productId] > 1) {
+            quantities[productId]--;
+            document.getElementById(`qty-${productId}`).innerText = quantities[productId];
+            updatePrice(productId);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-product-id]').forEach((el) => {
+            const productId = el.dataset.productId;
+            quantities[productId] = 1;
+        });
+        updateTotal();
+    });
+
+</script>
 
 <%- include('../partials/footer') %>
