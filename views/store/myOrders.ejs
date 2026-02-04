@@ -13,7 +13,6 @@
         </span>
     </div>
 
-    <% let total = 0; %>
 
     <!-- EMPTY STATE -->
     <% if (selectedProducts.length === 0) { %>
@@ -41,26 +40,26 @@
                 <div class="absolute top-2 right-2 bg-white rounded-lg shadow flex items-center overflow-hidden"
                     data-product-id="<%= p._id %>">
 
-                    <button type="button"
-                        class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
-                        onclick="decreaseQty('<%= p._id %>')">
-                        −
-                    </button>
+                    <form action="/decreaseQty" method="POST">
+                        <input type="hidden" name="productId" value="<%= p._id %>">
+                        <button type="submit"
+                            class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100">
+                            −
+                        </button>
+                    </form>
 
-                    <span id="qty-<%= p._id %>"
-                        class="px-3 text-sm font-semibold">
-                        1
+                    <span class="px-3 text-sm font-semibold">
+                    <%= p.quantity %>
                     </span>
-
 
                     <form action="/increaseQty" method="POST">
                         <input type="hidden" name="productId" value="<%= p._id %>">
-                        <button type="button"
-                            class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
-                            onclick="increaseQty('<%= p._id %>')">
+                        <button type="submit"
+                            class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100">
                             +
                         </button>
                     </form>
+
                 </div>
 
                 <img src="/<%= p.images[0] %>"
@@ -70,7 +69,6 @@
 
             <!-- DETAILS -->
             <div class="p-3 space-y-2">
-
                 <p class="text-sm font-semibold text-gray-800 truncate">
                     <%= p.productName %>
                 </p>
@@ -87,7 +85,6 @@
                 <p class="text-sm font-semibold text-gray-700">
                     Subtotal: ₹ <%= p.subTotal %>
                 </p>
-
 
                 <!-- REMOVE -->
                 <form action="/removeProductFromCart" method="POST"
@@ -115,10 +112,10 @@
                 Total Amount
             </span>
             <span id="total-amount" class="text-2xl font-bold text-green-700">
-                ₹ <%= total %>
+            ₹ <%= total %>
             </span>
-        </div>
 
+        </div>
         <p class="text-sm text-gray-500 mb-4">
             Inclusive of all taxes • Cash on Delivery available
         </p>
@@ -129,21 +126,16 @@
             ₹ <%= total %>
         </span>
     </p>
-
     <button class="bg-blue-600 text-white text-sm font-semibold
                    px-5 py-2 rounded-lg hover:bg-blue-700 transition">
         Order All
     </button>
 </div>
-
     </div>
     <% } %>
-
 </section>
 
 <script>
-    const quantities = {};
-
     function updateTotal() {
         let total = 0;
         document.querySelectorAll('[id^="price-"]').forEach((el) => {
@@ -164,26 +156,6 @@
         const qty = quantities[productId] || 1;
         priceEl.innerText = `₹ ${base * qty}`;
         updateTotal();
-    }
-
-    function increaseQty(productId) {
-        if (!quantities[productId]) {
-            quantities[productId] = 1;
-        }
-        quantities[productId]++;
-        document.getElementById(`qty-${productId}`).innerText = quantities[productId];
-        updatePrice(productId);
-    }
-
-    function decreaseQty(productId) {
-        if (!quantities[productId]) {
-            quantities[productId] = 1;
-        }
-        if (quantities[productId] > 1) {
-            quantities[productId]--;
-            document.getElementById(`qty-${productId}`).innerText = quantities[productId];
-            updatePrice(productId);
-        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {

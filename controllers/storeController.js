@@ -79,20 +79,6 @@ exports.getMyOrders = async (req, res) => {
     selectedProducts: products,
     total
   });
-
-  // Cart.getCartItems().then(items => {
-  //   const cartIds = items.map(i => i.productId.toString());
-
-  //   Product.fetchAll().then(products => {
-  //     const selectedProducts = products.filter(p =>
-  //       cartIds.includes(p._id.toString())
-  //     );
-
-  //     res.render('store/myOrders', {
-  //       selectedProducts
-  //     });
-  //   });
-  // });
 };
 
 
@@ -105,6 +91,15 @@ exports.postIncreaseQty = (req, res) => {
         })
         .catch(error=>console.log(error));
 };
+
+
+  exports.postDecreaseQty = (req, res) => {
+    const productId = req.body.productId;
+
+    Cart.decreaseQty(productId)
+      .then(() => res.redirect('/myOrders'))
+      .catch(err => console.log(err));
+  };
 
 
 

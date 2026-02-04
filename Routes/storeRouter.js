@@ -18,7 +18,7 @@ storeRouter.post('/removeProductFromCart', storeController.postRemoveProductFrom
 storeRouter.post('/removeFavourite', storeController.postRemoveFromFavourite);
 
 
-
+storeRouter.post('/decreaseQty', storeController.postDecreaseQty);
 storeRouter.post('/increaseQty', storeController.postIncreaseQty);
 
 module.exports = { storeRouter };

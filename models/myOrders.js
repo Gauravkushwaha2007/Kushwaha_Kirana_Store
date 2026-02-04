@@ -30,8 +30,16 @@ module.exports = class Cart {
     return db.collection('Cart').updateOne(
         { productId: new ObjectId(productId) },
         { $inc: { quantity: 1 } }
+    );   
+  }
+
+  static decreaseQty(productId) {
+    const db = getDb();
+    return db.collection('Cart').updateOne(
+      { productId: new ObjectId(productId), quantity: { $gt: 1 } },
+      { $inc: { quantity: -1 } }
     );
-}
+  }
 
 
   static getCartItems() {
