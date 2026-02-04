@@ -52,11 +52,15 @@
                         1
                     </span>
 
-                    <button type="button"
-                        class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
-                        onclick="increaseQty('<%= p._id %>')">
-                        +
-                    </button>
+
+                    <form action="/increaseQty" method="POST">
+                        <input type="hidden" name="productId" value="<%= p._id %>">
+                        <button type="button"
+                            class="px-2 py-1 text-sm font-bold text-gray-600 hover:bg-gray-100"
+                            onclick="increaseQty('<%= p._id %>')">
+                            +
+                        </button>
+                    </form>
                 </div>
 
                 <img src="/<%= p.images[0] %>"
@@ -76,6 +80,14 @@
                     data-price = "<%= p.price %>">
                     ₹ <%= p.price %>
                 </span>
+                <p class="text-xs text-gray-500">
+                    Qty: <%= p.quantity %>
+                </p>
+
+                <p class="text-sm font-semibold text-gray-700">
+                    Subtotal: ₹ <%= p.subTotal %>
+                </p>
+
 
                 <!-- REMOVE -->
                 <form action="/removeProductFromCart" method="POST"
@@ -110,14 +122,19 @@
         <p class="text-sm text-gray-500 mb-4">
             Inclusive of all taxes • Cash on Delivery available
         </p>
+<div class="mt-6 bg-white p-4 rounded-xl shadow flex items-center justify-between">
+    <p class="text-sm font-semibold text-gray-700">
+        Total Amount:
+        <span class="text-xl font-bold text-green-700">
+            ₹ <%= total %>
+        </span>
+    </p>
 
-        <button
-            class="w-full flex items-center justify-center gap-2
-                   bg-blue-600 text-white text-sm font-semibold
-                   px-4 py-3 rounded-xl
-                   hover:bg-blue-700 transition">
-            Order All
-        </button>
+    <button class="bg-blue-600 text-white text-sm font-semibold
+                   px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+        Order All
+    </button>
+</div>
 
     </div>
     <% } %>

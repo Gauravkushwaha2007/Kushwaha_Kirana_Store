@@ -16,4 +16,9 @@ storeRouter.get('/products/:productId', storeController.getProductDetails);
 storeRouter.post('/removeProductFromCart', storeController.postRemoveProductFromCart);
 
 storeRouter.post('/removeFavourite', storeController.postRemoveFromFavourite);
+
+
+
+storeRouter.post('/increaseQty', storeController.postIncreaseQty);
+
 module.exports = { storeRouter };
