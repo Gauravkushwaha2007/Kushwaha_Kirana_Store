@@ -3,24 +3,7 @@
 <main class="max-w-6xl mx-auto p-3">
 
     <!-- TITLE + SEARCH -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-        <h2 class="text-xl font-semibold">Our Products</h2>
-
-        <div class="relative w-full sm:w-72">
-            <input type="text" id="searchInput"
-                placeholder="Search products..."
-                onkeyup="searchProducts()"
-                class="w-full pl-10 pr-3 py-2 border rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            <span class="absolute left-3 top-2.5 text-gray-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.3-4.3"/>
-                </svg>
-            </span>
-        </div>
-    </div>
+<%- include('../partials/searchBar') %>
 
     <!-- CATEGORY AUTO SCROLL -->
     <div class="relative mt-2">
@@ -160,13 +143,6 @@
 
 <!-- SCRIPTS -->
 <script>
-function searchProducts(){
-    const v = searchInput.value.toLowerCase();
-    document.querySelectorAll('.product-card').forEach(c=>{
-        const n = c.querySelector('.product-name').innerText.toLowerCase();
-        c.style.display = n.includes(v) ? 'block' : 'none';
-    });
-}
 
 /* AUTO SCROLL */
 const scroller = document.getElementById('categoryScroller');
